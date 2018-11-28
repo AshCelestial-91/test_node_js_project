@@ -1,41 +1,107 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const express = require('express');
+const app = express();
+const port = 3000;
+const cors = require('cors');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+app.use(cors());
+//app.set('view engine', 'pug')
 
-var app = express();
+/*app.use(function (err, req, res, next) {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+    next();
+});*/
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+app.use('/monsters/', (req, res, next) => {
+    req.requestTime = Date.now();
+    console.log('Method: ' + req.method + ' Time: ' + req.requestTime);
+    next();
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+const monsters = [
+    {
+        id: 1,
+        name: 'vampire'
+    },
+    {
+        id: 2,
+        name: 'demon'
+    },
+    {
+        id: 3,
+        name: 'balrog'
+    }
+];
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+function findName (value) {
+    for (let i = 0; i < monsters.length; i++) {
+        if (monsters[i]['name'] === value) {
+            return monsters[i];
+        }
+    }
+}
+
+app.param('name', (req, res, next, name) => {
+    console.log(name);
+    next();
 });
 
-module.exports = app;
+app.get('/monsters/', (req, res) => {
+    res.send(monsters)
+});
+
+app.get('/monsters/:name', (req, res, next) => {
+    const monster = findName(req.params.name);
+    if (!monster) {
+        const error = new Error('This monster does not exist!');
+        error.status = 404;
+        return next(error);
+    }
+    res.send(monster);
+});
+
+app.post('/monsters/:name', (req, res, next) => {
+    const newMonster = req.params.name;
+    for (let i = 0; i < monsters.length; i++) {
+        if (newMonster === monsters[i]['name']) {
+            const error = new Error('This monster already exists!');
+            error.status = 400;
+            return next(error);
+        }
+    }
+    monsters.push({id: monsters.length + 1, name: newMonster});
+    res.send(`New monster ${newMonster} was created!`)
+});
+
+app.put('/', (req, res) => {
+    res.send('Update')
+});
+
+app.delete('/monsters/:name', (req, res, next) => {
+    const monsterToRemove = req.params.name;
+    for (let i = 0; i < monsters.length; i++) {
+        if (monsterToRemove === monsters[i]['name']) {
+            const reqMonsterIndex = monsters.findIndex(function (obj) {
+                return obj['name'] === monsterToRemove;
+            });
+            monsters.splice(reqMonsterIndex, 1);
+            console.log(reqMonsterIndex);
+            res.send(`The monster ${monsterToRemove} was deleted!`);
+            return;
+        }
+    }
+    const error = new Error('This monster cannot be found!');
+    error.status = 404;
+    next(error);
+});
+
+app.use((err, req, res, next) => {
+    if (!err.status) {
+        err.status = 500;
+    }
+    res.status(err.status).send(err.message);
+});
+
+app.listen(port, () => {
+    return console.log(`Example application listening on port ${port}!`);
+});
