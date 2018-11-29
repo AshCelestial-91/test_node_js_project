@@ -63,7 +63,7 @@ app.post('/monsters/:name', (req, res, next) => {
             return next(error);
         }
     }
-    monsters.push({id: monsters.length + 1, name: newMonster});
+    monsters.push({id: monsters[monsters.length - 1].id + 1, name: newMonster});
     res.send(`New monster ${newMonster} was created!`)
 });
 
