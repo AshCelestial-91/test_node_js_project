@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const cors = require('cors');
+const namefinder = require('./namefinder');
 
 app.use(cors());
 //app.set('view engine', 'pug')
@@ -33,13 +34,6 @@ const monsters = [
     }
 ];
 
-function findName (value) {
-    for (let i = 0; i < monsters.length; i++) {
-        if (monsters[i]['name'] === value) {
-            return monsters[i];
-        }
-    }
-}
 
 app.param('name', (req, res, next, name) => {
     console.log(name);
@@ -51,7 +45,7 @@ app.get('/monsters/', (req, res) => {
 });
 
 app.get('/monsters/:name', (req, res, next) => {
-    const monster = findName(req.params.name);
+    const monster = namefinder.findName(req.params.name, monsters);
     if (!monster) {
         const error = new Error('This monster does not exist!');
         error.status = 404;
