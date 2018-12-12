@@ -5,6 +5,7 @@ const cors = require('cors');
 const namefinder = require('./namefinder');
 
 app.use(cors());
+app.use(express.static('public'));
 //app.set('view engine', 'pug')
 
 /*app.use(function (err, req, res, next) {

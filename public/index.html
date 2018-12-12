@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Page Title</title>
+</head>
+<body>
+
+<script>
+    const getMonsters = () =>
+    {
+        const xhr = new XMLHttpRequest();
+        const url = 'http://localhost:3000/monsters';
+
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                document.getElementById("monsters").innerHTML = xhr.response;
+            }
+        };
+
+        xhr.open('GET', url);
+        xhr.send();
+    };
+
+    const getMonster = () => {
+        const xhr = new XMLHttpRequest();
+        const url = 'http://localhost:3000/monsters/';
+        const query = document.getElementById("monsterName").value;
+        const fullUrl = url + query;
+
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                document.getElementById("monster").innerHTML = xhr.response;
+            }
+        };
+
+        xhr.open('GET', fullUrl);
+        xhr.send();
+    };
+
+    const createMonster = () => {
+        const xhr = new XMLHttpRequest();
+        const url = 'http://localhost:3000/monsters/';
+        const query = document.getElementById("newMonsterName").value;
+        const fullUrl = url + query;
+
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                document.getElementById("newMonster").innerHTML = xhr.response;
+            }
+        };
+
+        xhr.open('POST', fullUrl);
+        xhr.send();
+    };
+
+    const deleteMonster = () => {
+        const xhr = new XMLHttpRequest();
+        const url = 'http://localhost:3000/monsters/';
+        const query = document.getElementById("deletedMonsterName").value;
+        const fullUrl = url + query;
+
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                document.getElementById("deletedMonster").innerHTML = xhr.response;
+            }
+        };
+
+        xhr.open('DELETE', fullUrl);
+        xhr.send();
+    }
+</script>
+
+<h1>This is a Heading</h1>
+<div id="monsters" style="border: solid black 1px">This is a paragraph.</div>
+
+<br>
+
+<button type="button" onclick="getMonsters()">Get monsters</button>
+
+<br>
+<br>
+
+<form>
+    Monster name:
+    <input id="monsterName" type="text">
+</form>
+
+<br>
+<div id="monster" style="border: solid black 1px">This is a paragraph.</div>
+
+<br>
+
+<button type="button" onclick="getMonster()">Get 1 monster</button>
+
+<br>
+<br>
+
+<form>
+    New Monster name:
+    <input id="newMonsterName" type="text">
+</form>
+
+<br>
+<div id="newMonster" style="border: solid black 1px">This is a paragraph.</div>
+
+<br>
+
+<button type="button" onclick="createMonster()">Create new monster</button>
+
+<br>
+<br>
+
+<form>
+    Monster to delete:
+    <input id="deletedMonsterName" type="text">
+</form>
+
+<br>
+<div id="deletedMonster" style="border: solid black 1px">This is a paragraph.</div>
+
+<br>
+
+<button type="button" onclick="deleteMonster()">Delete a monster</button>
+
+</body>
+</html>
