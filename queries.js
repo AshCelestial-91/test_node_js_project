@@ -39,7 +39,7 @@ const createMonster = (req, res) => {
 };
 
 const deleteMonster = (req, res) => {
-    const name = req.params.name);
+    const name = req.params.name;
 
     pool.query('DELETE FROM monsters WHERE name = $1', [name], (err, results) => {
         if (err) {
