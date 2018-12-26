@@ -2,7 +2,8 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const cors = require('cors');
-const namefinder = require('./namefinder');
+//const namefinder = require('./namefinder');
+const db = require('./queries');
 
 app.use(cors());
 app.use(express.static('public'));
@@ -20,7 +21,7 @@ app.use('/monsters/', (req, res, next) => {
     next();
 });
 
-const monsters = [
+/*const monsters = [
     {
         id: 1,
         name: 'vampire'
@@ -33,7 +34,7 @@ const monsters = [
         id: 3,
         name: 'balrog'
     }
-];
+];*/
 
 
 app.param('name', (req, res, next, name) => {
@@ -41,7 +42,12 @@ app.param('name', (req, res, next, name) => {
     next();
 });
 
-app.get('/monsters/', (req, res) => {
+app.get('/monsters/', db.getMonsters);
+app.get('/monsters/:name', db.getMonsterById);
+app.post('/monsters/:name', db.createMonster);
+app.delete('/monsters/:name', db.deleteMonster);
+
+/*app.get('/monsters/', (req, res) => {
     res.send(monsters)
 });
 
@@ -88,14 +94,14 @@ app.delete('/monsters/:name', (req, res, next) => {
     const error = new Error('This monster cannot be found!');
     error.status = 404;
     next(error);
-});
+});*/
 
-app.use((err, req, res, next) => {
+/*app.use((err, req, res, next) => {
     if (!err.status) {
         err.status = 500;
     }
     res.status(err.status).send(err.message);
-});
+});*/
 
 app.listen(port, () => {
     return console.log(`Example application listening on port ${port}!`);
