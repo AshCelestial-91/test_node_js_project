@@ -9,7 +9,7 @@
     const getMonsters = () =>
     {
         const xhr = new XMLHttpRequest();
-        const url = 'http://18.219.4.207:3000/monsters';
+        const url = 'http://18.218.169.118:3000/monsters';
 
         xhr.onreadystatechange = () => {
             if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -23,7 +23,7 @@
 
     const getMonster = () => {
         const xhr = new XMLHttpRequest();
-        const url = 'http://18.219.4.207:3000/monsters/';
+        const url = 'http://18.218.169.118:3000/monsters/';
         const query = document.getElementById("monsterName").value;
         const fullUrl = url + query;
 
@@ -39,7 +39,7 @@
 
     const createMonster = () => {
         const xhr = new XMLHttpRequest();
-        const url = 'http://18.219.4.207:3000/monsters/';
+        const url = 'http://18.218.169.118:3000/monsters/';
         const query = document.getElementById("newMonsterName").value;
         const fullUrl = url + query;
 
@@ -55,7 +55,7 @@
 
     const deleteMonster = () => {
         const xhr = new XMLHttpRequest();
-        const url = 'http://18.219.4.207:3000/monsters/';
+        const url = 'http://18.218.169.118:3000/monsters/';
         const query = document.getElementById("deletedMonsterName").value;
         const fullUrl = url + query;
 
