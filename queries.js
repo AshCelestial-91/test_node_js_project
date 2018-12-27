@@ -1,10 +1,10 @@
 const Pool = require('pg').Pool;
 const pool = new Pool({
-    user: 'ash',
-    host: '18.219.4.207',
+    user: 'julius',
+    host: 'localhost',
     database: 'ash',
     password: 'ash',
-    port: 5432,
+    port: 5432
 });
 
 const getMonsters = (req, res) => {
