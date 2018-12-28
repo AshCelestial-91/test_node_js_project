@@ -28,7 +28,7 @@ const getMonsterById = (req, res) => {
 };
 
 const createMonster = (req, res) => {
-    const name = req.body.name;
+    const name = req.params.name;
 
     pool.query('INSERT INTO monsters (name) VALUES $1', [name], (err, results) => {
         if (err) {
