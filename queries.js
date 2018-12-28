@@ -30,11 +30,11 @@ const getMonsterById = (req, res) => {
 const createMonster = (req, res) => {
     const name = req.params.name;
 
-    pool.query('INSERT INTO monsters (name) VALUES "$1"', [name], (err, results) => {
+    pool.query('INSERT INTO monsters (name) VALUES ($1)', [name], (err, results) => {
         if (err) {
             throw err
         }
-        res.status(201).send(`Monster added with name: ${results.name}`)
+        res.status(201).send(`Monster added with name: ${name}`)
     })
 };
 
